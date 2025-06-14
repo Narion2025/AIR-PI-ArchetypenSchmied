@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archetypen-Schmied | AIR-PI Resonanz-Interface</title>
+    
+    <!-- Avenir Web Font (via Adobe Fonts Alternative) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables */
+        :root {
+            --fire-primary: #ff6b00;
+            --fire-secondary: #d2691e;
+            --fire-glow: rgba(255, 140, 0, 0.6);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --shadow-depth: 0 0 80px var(--fire-glow);
+        }
+
+        /* Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Avenir', -apple-system, sans-serif;
+            font-weight: 400;
+            background: #000;
+            color: var(--text-primary);
+            position: relative;
+            cursor: crosshair;
+        }
+
+        /* Fire Background Layer */
+        .resonance-field {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .fire-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.2) brightness(0.8);
+            opacity: 0.85;
+        }
+
+        /* Depth Gradient */
+        .depth-layer {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, 
+                    transparent 0%,
+                    rgba(0,0,0,0.2) 30%,
+                    rgba(0,0,0,0.5) 50%,
+                    rgba(0,0,0,0.8) 70%,
+                    rgba(0,0,0,0.95) 100%
+                );
+            pointer-events: none;
+            transition: background 0.8s ease;
+        }
+
+        /* AIR-PI Energy Field */
+        .air-pi-field {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .energy-wave {
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            top: -100%;
+            left: -100%;
+            background: radial-gradient(
+                circle,
+                transparent 30%,
+                rgba(255,107,0,0.03) 40%,
+                transparent 50%,
+                rgba(255,107,0,0.02) 60%,
+                transparent 70%
+            );
+            animation: energyPulse 12s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        @keyframes energyPulse {
+            0%, 100% { transform: scale(0.8) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+
+        /* Main Stage */
+        .transformation-stage {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Title Section */
+        .title-constellation {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: emerge 2s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 20px rgba(255,107,0,0.5);
+            position: relative;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--fire-primary), 
+                transparent
+            );
+            opacity: 0.6;
+        }
+
+        .resonance-text {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-style: italic;
+            opacity: 0.8;
+            max-width: 650px;
+            line-height: 1.7;
+            margin: 2rem auto 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .air-pi-signature {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
+
+        /* Schmied Portal */
+        .schmied-portal {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: emerge 2s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .portal-core {
+            position: absolute;
+            inset: 20px;
+            background: radial-gradient(circle at 40% 40%, 
+                var(--fire-primary), 
+                var(--fire-secondary) 50%, 
+                #8b4513 100%
+            );
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                var(--shadow-depth),
+                inset 0 0 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .portal-core::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                rgba(255,255,255,0.1) 90deg,
+                transparent 180deg,
+                rgba(255,255,255,0.05) 270deg,
+                transparent 360deg
+            );
+            animation: portalSpin 20s linear infinite;
+        }
+
+        @keyframes portalSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .portal-core:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 120px var(--fire-glow),
+                inset 0 0 80px rgba(0,0,0,0.5);
+        }
+
+        /* Resonance Rings */
+        .resonance-ring {
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255,140,0,0.3);
+            border-radius: 50%;
+            animation: resonance 3s ease-out infinite;
+        }
+
+        .resonance-ring:nth-child(2) { animation-delay: 1s; }
+        .resonance-ring:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes resonance {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+                border-width: 2px;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        /* Transformation Trigger */
+        .transformation-trigger {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--text-primary);
+            padding: 1.2rem 3.5rem;
+            font-size: 1.05rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: emerge 2s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .transformation-trigger::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,140,0,0.2), 
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .transformation-trigger:hover {
+            border-color: var(--fire-primary);
+            color: var(--fire-primary);
+            box-shadow: 0 0 30px rgba(255,140,0,0.3);
+        }
+
+        .transformation-trigger:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* AIR-PI Interface Modal */
+        .air-pi-interface {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+        }
+
+        .air-pi-interface.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .interface-chamber {
+            position: relative;
+            background: rgba(10,10,10,0.9);
+            padding: 3rem;
+            border-radius: 2px;
+            border: 1px solid rgba(255,140,0,0.2);
+            box-shadow: 
+                0 0 100px rgba(255,140,0,0.3),
+                inset 0 0 50px rgba(255,140,0,0.05);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .air-pi-interface.active .interface-chamber {
+            transform: scale(1) translateY(0);
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .interface-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .interface-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        /* ElevenLabs Widget Container */
+        .schmied-voice-container {
+            background: rgba(20,20,20,0.5);
+            border-radius: 10px;
+            padding: 2rem;
+            border: 1px solid rgba(255,140,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        /* Close Portal */
+        .close-portal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .close-portal:hover {
+            border-color: var(--fire-primary);
+            color: var(--fire-primary);
+            transform: rotate(90deg);
+        }
+
+        /* Animations */
+        @keyframes emerge {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Wisdom */
+        .archetypal-wisdom {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            opacity: 0.4;
+            letter-spacing: 0.08em;
+            font-style: italic;
+            animation: fadeIn 3s ease forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .schmied-portal {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .portal-core {
+                font-size: 4rem;
+            }
+            
+            .transformation-trigger {
+                padding: 1rem 2.5rem;
+                font-size: 0.95rem;
+            }
+            
+            .interface-chamber {
+                padding: 2rem;
+            }
+        }
+
+        /* Cursor Glow Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, 
+                rgba(255,140,0,0.3), 
+                transparent 70%
+            );
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+        }
+    </style>
+    
+    <!-- ElevenLabs ConvAI Widget -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget@latest" defer></script>
+</head>
+<body>
+    <!-- Resonance Field (Fire Background) -->
+    <div class="resonance-field">
+        <video class="fire-video" autoplay muted loop playsinline>
+            <source src="SChmiedAmFeuer.mp4" type="video/mp4">
+        </video>
+        <div class="depth-layer"></div>
+        <div class="air-pi-field">
+            <div class="energy-wave"></div>
+        </div>
+    </div>
+
+    <!-- Main Transformation Stage -->
+    <div class="transformation-stage">
+        <!-- Title Constellation -->
+        <div class="title-constellation">
+            <h1 class="main-title">Der Archetypen-Schmied</h1>
+            <p class="resonance-text">
+                Wo das Feuer der Erkenntnis auf die Tiefe deiner Seele trifft,<br>
+                dort schmieden wir gemeinsam deine wahre archetypische Essenz
+            </p>
+            <p class="air-pi-signature">AIR-PI • Resonanz-Interface</p>
+        </div>
+
+        <!-- Schmied Portal -->
+        <div class="schmied-portal">
+            <div class="resonance-ring"></div>
+            <div class="resonance-ring"></div>
+            <div class="resonance-ring"></div>
+            <div class="portal-core" id="portalCore">
+                <span style="position: relative; z-index: 2;">🔥</span>
+            </div>
+        </div>
+
+        <!-- Transformation Trigger -->
+        <button class="transformation-trigger" id="transformationTrigger">
+            Tritt ein in die Schmiede
+        </button>
+    </div>
+
+    <!-- Archetypal Wisdom -->
+    <div class="archetypal-wisdom">
+        Drei Archetypen warten darauf, in dir erweckt zu werden
+    </div>
+
+    <!-- AIR-PI Interface Modal -->
+    <div class="air-pi-interface" id="airPiInterface">
+        <div class="interface-chamber">
+            <button class="close-portal" id="closePortal">×</button>
+            
+            <div class="interface-header">
+                <h2 class="interface-title">Die Schwelle ist überschritten</h2>
+                <p class="interface-subtitle">Sprich mit dem Schmied deiner Seele</p>
+            </div>
+
+            <div class="schmied-voice-container">
+                <elevenlabs-convai 
+                    agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+                    style="width: 100%; height: 100px;">
+                </elevenlabs-convai>
+            </div>
+
+            <p style="text-align: center; opacity: 0.6; font-size: 0.85rem; line-height: 1.6;">
+                Der Schmied führt dich durch 44 mystische Fragen.<br>
+                Am Ende offenbaren sich deine drei dominanten Archetypen.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <script>
+        // Initialize AIR-PI Resonance System
+        class ArchetypenResonance {
+            constructor() {
+                this.portal = document.getElementById('portalCore');
+                this.trigger = document.getElementById('transformationTrigger');
+                this.interface = document.getElementById('airPiInterface');
+                this.closeBtn = document.getElementById('closePortal');
+                this.cursorGlow = document.getElementById('cursorGlow');
+                this.depthLayer = document.querySelector('.depth-layer');
+                
+                this.initializeResonance();
+                this.initializeCursor();
+            }
+
+            initializeResonance() {
+                // Portal and trigger activation
+                [this.portal, this.trigger].forEach(element => {
+                    element.addEventListener('click', () => this.openInterface());
+                });
+
+                // Close interface
+                this.closeBtn.addEventListener('click', () => this.closeInterface());
+                
+                // Close on background click
+                this.interface.addEventListener('click', (e) => {
+                    if (e.target === this.interface) {
+                        this.closeInterface();
+                    }
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.interface.classList.contains('active')) {
+                        this.closeInterface();
+                    }
+                });
+            }
+
+            initializeCursor() {
+                let mouseX = 0, mouseY = 0;
+                let cursorX = 0, cursorY = 0;
+
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // Update depth layer based on mouse position
+                    const x = e.clientX / window.innerWidth;
+                    const y = e.clientY / window.innerHeight;
+                    
+                    this.depthLayer.style.background = `
+                        radial-gradient(circle at ${x * 100}% ${y * 100}%, 
+                            transparent 0%,
+                            rgba(0,0,0,0.2) 30%,
+                            rgba(0,0,0,0.5) 50%,
+                            rgba(0,0,0,0.8) 70%,
+                            rgba(0,0,0,0.95) 100%
+                        )
+                    `;
+                });
+
+                // Smooth cursor follow
+                const animateCursor = () => {
+                    const dx = mouseX - cursorX;
+                    const dy = mouseY - cursorY;
+                    
+                    cursorX += dx * 0.1;
+                    cursorY += dy * 0.1;
+                    
+                    this.cursorGlow.style.left = cursorX + 'px';
+                    this.cursorGlow.style.top = cursorY + 'px';
+                    
+                    requestAnimationFrame(animateCursor);
+                };
+                animateCursor();
+            }
+
+            openInterface() {
+                this.interface.classList.add('active');
+                document.body.style.cursor = 'default';
+                
+                // Trigger resonance effect
+                this.createResonanceWave();
+            }
+
+            closeInterface() {
+                this.interface.classList.remove('active');
+                document.body.style.cursor = 'crosshair';
+            }
+
+            createResonanceWave() {
+                const wave = document.createElement('div');
+                wave.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    width: 100px;
+                    height: 100px;
+                    border: 2px solid var(--fire-primary);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%) scale(0);
+                    opacity: 1;
+                    pointer-events: none;
+                    z-index: 999;
+                `;
+                
+                document.body.appendChild(wave);
+                
+                // Animate wave
+                wave.animate([
+                    { transform: 'translate(-50%, -50%) scale(0)', opacity: 1 },
+                    { transform: 'translate(-50%, -50%) scale(20)', opacity: 0 }
+                ], {
+                    duration: 1500,
+                    easing: 'ease-out'
+                }).onfinish = () => wave.remove();
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ArchetypenResonance();
+        });
+
+        // Performance optimization
+        const throttle = (func, limit) => {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Archetypen-Schmied | AIR-PI Interface</title>
+    
+    <!-- Avenir Font Alternative (Montserrat ist ähnlich) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Avenir', -apple-system, sans-serif;
+            font-weight: 400;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Fire Background */
+        .fire-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .fire-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .fire-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, 
+                transparent 0%, 
+                rgba(0,0,0,0.3) 40%, 
+                rgba(0,0,0,0.7) 70%, 
+                rgba(0,0,0,0.9) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* Interactive Fire Particles */
+        .fire-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #ff6b00 0%, #ff3300 50%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: rise 4s linear infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -20px;
+                opacity: 0;
+                transform: translateX(0) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: translateX(var(--drift)) scale(0.3);
+            }
+        }
+
+        /* Main Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Title */
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Subtitle AIR-PI */
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 300;
+            opacity: 0.8;
+            margin-bottom: 60px;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .air-pi {
+            display: block;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            opacity: 0.6;
+            letter-spacing: 0.1em;
+        }
+
+        /* Central Interface */
+        .interface-container {
+            position: relative;
+            opacity: 0;
+            animation: fadeInScale 1.5s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        /* Schmied Avatar */
+        .schmied-avatar {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 40px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .schmied-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff8c00, #d2691e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 60px rgba(255,140,0,0.6),
+                inset 0 0 40px rgba(0,0,0,0.3);
+        }
+
+        .avatar-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, transparent 40%, rgba(255,140,0,0.1) 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(255,140,0,0.4);
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.8);
+            color: #fff;
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .cta-button:hover {
+            border-color: #ff8c00;
+            color: #ff8c00;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,140,0,0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,140,0,0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Hidden Widget Container */
+        .widget-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .widget-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .widget-content {
+            position: relative;
+            background: rgba(20,20,20,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,140,0,0.3);
+            box-shadow: 0 0 60px rgba(255,140,0,0.4);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .widget-modal.active .widget-content {
+            transform: scale(1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            border-color: #ff8c00;
+            color: #ff8c00;
+            transform: rotate(90deg);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Footer Note */
+        .footer-note {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            opacity: 0.5;
+            letter-spacing: 0.05em;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .schmied-avatar {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .avatar-circle {
+                font-size: 60px;
+            }
+            
+            .cta-button {
+                padding: 15px 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    
+    <!-- ElevenLabs Widget -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget@latest/dist/main.js" defer></script>
+</head>
+<body>
+    <!-- Fire Background -->
+    <div class="fire-container">
+        <video class="fire-video" autoplay muted loop playsinline>
+            <source src="SChmiedAmFeuer.mp4" type="video/mp4">
+        </video>
+        <div class="fire-overlay"></div>
+        <div class="fire-particles" id="particles"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1 class="title">Der Archetypen-Schmied</h1>
+        
+        <p class="subtitle">
+            An der Schwelle zwischen Bewusstsein und archetypischer Tiefe schmieden wir gemeinsam deine wahre Essenz
+            <span class="air-pi">AIR-PI | Adaptable Insight Recognition-Pattern Interface</span>
+        </p>
+
+        <div class="interface-container">
+            <!-- Schmied Avatar -->
+            <div class="schmied-avatar" id="schmiedAvatar">
+                <div class="pulse-ring"></div>
+                <div class="avatar-circle">
+                    <span>🔥</span>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <button class="cta-button" id="startButton">
+                Beginne deine Transformation
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+        Eine Reise zu deinen drei dominanten Archetypen
+    </div>
+
+    <!-- Widget Modal -->
+    <div class="widget-modal" id="widgetModal">
+        <div class="widget-content">
+            <button class="close-button" id="closeButton">&times;</button>
+            <elevenlabs-convai 
+                agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+                style="width: 400px; height: 80px;">
+            </elevenlabs-convai>
+        </div>
+    </div>
+
+    <script>
+        // Fire Particle System
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 15 + 5;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 3 + 2;
+            const drift = (Math.random() - 0.5) * 100;
+            
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = left + '%';
+            particle.style.animationDuration = duration + 's';
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+
+        // Create particles continuously
+        setInterval(createParticle, 200);
+
+        // Widget Modal Control
+        const widgetModal = document.getElementById('widgetModal');
+        const startButton = document.getElementById('startButton');
+        const schmiedAvatar = document.getElementById('schmiedAvatar');
+        const closeButton = document.getElementById('closeButton');
+
+        function openWidget() {
+            widgetModal.classList.add('active');
+        }
+
+        function closeWidget() {
+            widgetModal.classList.remove('active');
+        }
+
+        startButton.addEventListener('click', openWidget);
+        schmiedAvatar.addEventListener('click', openWidget);
+        closeButton.addEventListener('click', closeWidget);
+        
+        // Close on background click
+        widgetModal.addEventListener('click', (e) => {
+            if (e.target === widgetModal) {
+                closeWidget();
+            }
+        });
+
+        // Mouse interaction with fire
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelector('.fire-overlay').style.background = `
+                radial-gradient(circle at ${x * 100}% ${y * 100}%, 
+                    transparent 0%, 
+                    rgba(0,0,0,0.3) 40%, 
+                    rgba(0,0,0,0.7) 70%, 
+                    rgba(0,0,0,0.9) 100%
+                )
+            `;
+        });
+    </script>
+</body>
+</html>

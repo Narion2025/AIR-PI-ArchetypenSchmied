@@ -1,0 +1,37 @@
+{
+  "name": "archetypen-schmied-mvp1",
+  "version": "1.0.0",
+  "description": "AIR-PI Archetypen-Schmied - Emotionale Schwelle zu archetypischer Tiefe",
+  "main": "server_mvp1.js",
+  "scripts": {
+    "start": "node server_mvp1.js",
+    "dev": "nodemon server_mvp1.js",
+    "serve:static": "python3 -m http.server 3000",
+    "build": "echo 'No build required - static site'",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "netlify deploy --prod"
+  },
+  "keywords": [
+    "archetypen",
+    "jung",
+    "air-pi",
+    "elevenlabs",
+    "ai-chatbot",
+    "psychology"
+  ],
+  "author": "Benjamin Poersch",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

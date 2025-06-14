@@ -1,0 +1,156 @@
+{
+  "archetypen_schmied_wissensbasis": {
+    "fragen_katalog": {
+      "unschuldiger": [
+        {
+          "id": 1,
+          "original": "Ich glaube grundsätzlich an das Gute in Menschen",
+          "mystisch": "Siehst du Gold in jedem Metall?",
+          "archetyp": "innocent",
+          "kategorie": "vertrauen"
+        },
+        {
+          "id": 2,
+          "original": "Ich vertraue darauf, dass sich Probleme von selbst lösen",
+          "mystisch": "Vertraut deine Seele dem Feuer der Zeit?",
+          "archetyp": "innocent",
+          "kategorie": "vertrauen"
+        },
+        {
+          "id": 3,
+          "original": "Ich bevorzuge einfache, klare Lösungen",
+          "mystisch": "Suchst du den geraden Weg durch die Glut?",
+          "archetyp": "innocent",
+          "kategorie": "einfachheit"
+        }
+      ],
+      "entdecker": [
+        {
+          "id": 4,
+          "original": "Ich fühle mich eingeengt von zu vielen Regeln",
+          "mystisch": "Erdrücken dich schwere Ketten der Ordnung?",
+          "archetyp": "explorer",
+          "kategorie": "freiheit"
+        },
+        {
+          "id": 5,
+          "original": "Ich liebe es, neue Orte und Erfahrungen zu entdecken",
+          "mystisch": "Ruft dich die Weite jenseits der Schmiede?",
+          "archetyp": "explorer",
+          "kategorie": "abenteuer"
+        },
+        {
+          "id": 6,
+          "original": "Freiheit ist mir wichtiger als Sicherheit",
+          "mystisch": "Ist dir Freiheit kostbarer als sichere Esse?",
+          "archetyp": "explorer",
+          "kategorie": "freiheit"
+        }
+      ],
+      "weise": [
+        {
+          "id": 7,
+          "original": "Ich sammle gerne Wissen und Informationen",
+          "mystisch": "Sammelst du alte Formeln wie kostbare Erze?",
+          "archetyp": "sage",
+          "kategorie": "wissen"
+        },
+        {
+          "id": 8,
+          "original": "Menschen kommen zu mir, wenn sie Rat brauchen",
+          "mystisch": "Suchen Seelen deinen Rat in dunklen Stunden?",
+          "archetyp": "sage",
+          "kategorie": "weisheit"
+        },
+        {
+          "id": 9,
+          "original": "Ich analysiere Situationen gründlich, bevor ich handle",
+          "mystisch": "Prüfst du jedes Metall vor dem Feuer?",
+          "archetyp": "sage",
+          "kategorie": "analyse"
+        }
+      ],
+      "held": [
+        {
+          "id": 10,
+          "original": "Ich übernehme gerne Verantwortung in schwierigen Situationen",
+          "mystisch": "Greifst du zum Hammer wenn andere zögern?",
+          "archetyp": "hero",
+          "kategorie": "verantwortung"
+        },
+        {
+          "id": 11,
+          "original": "Ich kämpfe für das, was ich für richtig halte",
+          "mystisch": "Kämpfst du für das was dein Herz erkennt?",
+          "archetyp": "hero",
+          "kategorie": "kampf"
+        },
+        {
+          "id": 12,
+          "original": "Herausforderungen motivieren mich",
+          "mystisch": "Entfachen Hindernisse das Feuer in dir?",
+          "archetyp": "hero",
+          "kategorie": "herausforderung"
+        }
+      ]
+    },
+    "archetypen_metaphern": {
+      "innocent": {
+        "name": "Der reine Stahl",
+        "element": "Silber",
+        "eigenschaft": "Reinheit",
+        "schatten": "Naivität",
+        "schmied_beschreibung": "Wie reines Silber, das noch geformt werden will"
+      },
+      "explorer": {
+        "name": "Der wandernde Schmied", 
+        "element": "Wind",
+        "eigenschaft": "Freiheit",
+        "schatten": "Rastlosigkeit",
+        "schmied_beschreibung": "Wie Feuer, das nie an einem Ort verweilt"
+      },
+      "sage": {
+        "name": "Der Meister der alten Künste",
+        "element": "Kristall",
+        "eigenschaft": "Weisheit", 
+        "schatten": "Isolation",
+        "schmied_beschreibung": "Wie uraltes Wissen in kostbaren Steinen"
+      },
+      "hero": {
+        "name": "Der Schwertschmied",
+        "element": "Eisen",
+        "eigenschaft": "Mut",
+        "schatten": "Selbstüberschätzung",
+        "schmied_beschreibung": "Wie Stahl, der im Kampf gehärtet wird"
+      }
+    },
+    "bestaetigungen": [
+      "Das Feuer brennt heller...",
+      "Die Form nimmt Gestalt an...",
+      "Ein weiterer Funke der Wahrheit...",
+      "Das Metall wird geschmeidiger...",
+      "Die Glut spricht zu mir...",
+      "Die Seele öffnet sich...",
+      "Ein neuer Hammerschlag...",
+      "Das Geheimnis lichtet sich..."
+    ],
+    "finale_enthuellung": {
+      "template": "Das Werk ist vollendet. Drei Formen haben sich aus dem Feuer erhoben: {archetyp1}, {archetyp2}, {archetyp3}. Deine Seele trägt nun ihre wahre Gestalt.",
+      "prompt_generation": "Besuche archetypen-schmied.de für deine personalisierten Prompts."
+    },
+    "auswertungslogik": {
+      "scoring": {
+        "1": "Das Metall widersteht",
+        "2": "Schwache Glut", 
+        "3": "Die Mitte des Weges",
+        "4": "Starke Flammen",
+        "5": "Das Feuer lodert"
+      },
+      "interpretation": {
+        "niedrig": "Dieses Metall schlummert noch",
+        "mittel": "Die Form beginnt sich zu zeigen", 
+        "hoch": "Hier brennt das wahre Feuer"
+      }
+    }
+  }
+} 
