@@ -13,7 +13,7 @@ yarn-error.log*
 
 # OS files
 .DS_Store
-Thumbs.db
+Thumbbs.db
 
 # IDE files
 .vscode/

@@ -8,9 +8,6 @@
     <!-- Avenir Font Alternative (Montserrat ist ähnlich) -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome für Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
         /* Reset & Base */
         * {
@@ -242,80 +239,23 @@
             box-shadow: 0 10px 30px rgba(255,140,0,0.3);
         }
 
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,140,0,0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .cta-button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        /* Hidden Widget Container */
-        .widget-modal {
+        /* Minimal Widget Integration */
+        .widget-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .widget-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .widget-content {
-            position: relative;
-            background: rgba(20,20,20,0.95);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid rgba(255,140,0,0.3);
-            box-shadow: 0 0 60px rgba(255,140,0,0.4);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .widget-modal.active .widget-content {
-            transform: scale(1);
-        }
-
-        .close-button {
-            position: absolute;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 2s;
         }
 
-        .close-button:hover {
-            border-color: #ff8c00;
-            color: #ff8c00;
-            transform: rotate(90deg);
+        /* Custom Widget Styling Override */
+        elevenlabs-convai {
+            --elevenlabs-bg-color: rgba(20, 20, 20, 0.8) !important;
+            --elevenlabs-text-color: #ff8c00 !important;
+            --elevenlabs-border-radius: 50px !important;
+            --elevenlabs-shadow: 0 4px 20px rgba(255, 140, 0, 0.3) !important;
         }
 
         /* Animations */
@@ -338,6 +278,22 @@
             100% {
                 opacity: 1;
                 transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes pulse-attention {
+            0%, 100% { 
+                transform: scale(1.5); 
+                box-shadow: 0 0 60px rgba(255,140,0,1);
+            }
+            50% { 
+                transform: scale(1.7); 
+                box-shadow: 0 0 80px rgba(255,140,0,1);
             }
         }
 
@@ -371,11 +327,13 @@
                 padding: 15px 40px;
                 font-size: 1rem;
             }
+
+            .widget-container {
+                bottom: 10px;
+                right: 10px;
+            }
         }
     </style>
-    
-    <!-- ElevenLabs Widget -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </head>
 <body>
     <!-- Fire Background -->
@@ -417,16 +375,15 @@
         Eine Reise zu deinen drei dominanten Archetypen
     </div>
 
-    <!-- Widget Modal -->
-    <div class="widget-modal" id="widgetModal">
-        <div class="widget-content">
-            <button class="close-button" id="closeButton">&times;</button>
-            <elevenlabs-convai 
-                agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
-                style="width: 400px; height: 80px;">
-            </elevenlabs-convai>
-        </div>
+    <!-- Minimal Widget in Corner -->
+    <div class="widget-container">
+        <elevenlabs-convai 
+            agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+            style="width: 60px; height: 60px;">
+        </elevenlabs-convai>
     </div>
+
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
     <script>
         // Fire Particle System
@@ -453,30 +410,78 @@
         // Create particles continuously
         setInterval(createParticle, 200);
 
-        // Widget Modal Control
-        const widgetModal = document.getElementById('widgetModal');
+        // Button click to focus widget
         const startButton = document.getElementById('startButton');
         const schmiedAvatar = document.getElementById('schmiedAvatar');
-        const closeButton = document.getElementById('closeButton');
+        const widgetContainer = document.querySelector('.widget-container');
 
-        function openWidget() {
-            widgetModal.classList.add('active');
-        }
-
-        function closeWidget() {
-            widgetModal.classList.remove('active');
-        }
-
-        startButton.addEventListener('click', openWidget);
-        schmiedAvatar.addEventListener('click', openWidget);
-        closeButton.addEventListener('click', closeWidget);
-        
-        // Close on background click
-        widgetModal.addEventListener('click', (e) => {
-            if (e.target === widgetModal) {
-                closeWidget();
+        function focusWidget() {
+            // Animate widget to be more prominent
+            widgetContainer.style.transform = 'scale(1.5)';
+            widgetContainer.style.boxShadow = '0 0 60px rgba(255,140,0,1)';
+            
+            // Create a pulsing effect to draw attention
+            widgetContainer.style.animation = 'pulse-attention 1s ease-in-out 3';
+            
+            // Try multiple methods to activate the widget
+            const widget = document.querySelector('elevenlabs-convai');
+            if (widget) {
+                // Method 1: Dispatch click event
+                widget.dispatchEvent(new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                }));
+                
+                // Method 2: Focus the widget
+                widget.focus();
+                
+                // Method 3: Try to find clickable elements
+                setTimeout(() => {
+                    // Look for any clickable element within the widget
+                    const clickableElements = widget.querySelectorAll('button, [role="button"], [tabindex="0"]');
+                    clickableElements.forEach(el => el.click());
+                }, 100);
             }
-        });
+            
+            // Show instruction
+            showInstruction();
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                widgetContainer.style.transform = 'scale(1)';
+                widgetContainer.style.boxShadow = 'none';
+                widgetContainer.style.animation = '';
+            }, 3000);
+        }
+        
+        function showInstruction() {
+            const instruction = document.createElement('div');
+            instruction.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: rgba(255,140,0,0.9);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 14px;
+                z-index: 101;
+                animation: fadeInUp 0.5s ease;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            `;
+            instruction.innerHTML = '👉 Klicke auf das Widget unten rechts';
+            document.body.appendChild(instruction);
+            
+            setTimeout(() => {
+                instruction.style.opacity = '0';
+                instruction.style.transform = 'translateY(20px)';
+                setTimeout(() => instruction.remove(), 500);
+            }, 3000);
+        }
+
+        startButton.addEventListener('click', focusWidget);
+        schmiedAvatar.addEventListener('click', focusWidget);
 
         // Mouse interaction with fire
         document.addEventListener('mousemove', (e) => {
@@ -494,4 +499,4 @@
         });
     </script>
 </body>
-</html>
+</html> 

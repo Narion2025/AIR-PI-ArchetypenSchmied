@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .widget-test {
+            background: #333;
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <h1>🔧 ElevenLabs Widget Debug Test</h1>
+    
+    <div class="widget-test">
+        <h2>Widget Status:</h2>
+        <div id="status" class="status">
+            <p class="info">⏳ Lade Widget...</p>
+        </div>
+        
+        <h3>Widget Container:</h3>
+        <div style="background: #222; padding: 20px; border-radius: 10px; min-height: 100px;">
+            <elevenlabs-convai 
+                agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj">
+            </elevenlabs-convai>
+        </div>
+        
+        <h3>Alternative Größen:</h3>
+        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+            <div>
+                <p>Klein (40x40)</p>
+                <elevenlabs-convai 
+                    agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+                    style="width: 40px; height: 40px;">
+                </elevenlabs-convai>
+            </div>
+            <div>
+                <p>Mittel (80x80)</p>
+                <elevenlabs-convai 
+                    agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+                    style="width: 80px; height: 80px;">
+                </elevenlabs-convai>
+            </div>
+            <div>
+                <p>Groß (120x80)</p>
+                <elevenlabs-convai 
+                    agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
+                    style="width: 120px; height: 80px;">
+                </elevenlabs-convai>
+            </div>
+        </div>
+    </div>
+    
+    <div class="widget-test">
+        <h3>Debug Info:</h3>
+        <pre id="debug" style="text-align: left; background: #111; padding: 15px; border-radius: 5px; overflow-x: auto;"></pre>
+    </div>
+
+    <!-- ElevenLabs Script -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    
+    <script>
+        const statusEl = document.getElementById('status');
+        const debugEl = document.getElementById('debug');
+        let debugInfo = [];
+        
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            debugInfo.push(`[${time}] ${message}`);
+            debugEl.textContent = debugInfo.join('\n');
+            console.log(message);
+        }
+        
+        // Check if script loaded
+        window.addEventListener('load', () => {
+            log('Page loaded');
+            
+            // Check for ElevenLabs script
+            const scripts = Array.from(document.scripts);
+            const elevenLabsScript = scripts.find(s => s.src.includes('elevenlabs'));
+            
+            if (elevenLabsScript) {
+                log('✅ ElevenLabs script found: ' + elevenLabsScript.src, 'success');
+            } else {
+                log('❌ ElevenLabs script not found!', 'error');
+            }
+            
+            // Check for widgets
+            setTimeout(() => {
+                const widgets = document.querySelectorAll('elevenlabs-convai');
+                log(`Found ${widgets.length} widget elements`);
+                
+                if (widgets.length > 0) {
+                    statusEl.innerHTML = `<p class="success">✅ ${widgets.length} Widgets gefunden!</p>`;
+                    
+                    widgets.forEach((widget, index) => {
+                        log(`Widget ${index + 1}: ${widget.outerHTML.substring(0, 100)}...`);
+                        
+                        // Check if widget has shadow root
+                        if (widget.shadowRoot) {
+                            log(`Widget ${index + 1} has shadow root ✅`, 'success');
+                        } else {
+                            log(`Widget ${index + 1} has NO shadow root ❌`, 'error');
+                        }
+                    });
+                } else {
+                    statusEl.innerHTML = '<p class="error">❌ Keine Widgets gefunden!</p>';
+                }
+                
+                // Check for custom elements
+                if (window.customElements) {
+                    log('Custom Elements API available ✅');
+                    
+                    // Try to get the widget definition
+                    customElements.whenDefined('elevenlabs-convai').then(() => {
+                        log('elevenlabs-convai custom element defined ✅', 'success');
+                    }).catch(err => {
+                        log('elevenlabs-convai custom element NOT defined ❌', 'error');
+                    });
+                }
+            }, 3000);
+        });
+        
+        // Listen for errors
+        window.addEventListener('error', (e) => {
+            log(`ERROR: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+    </script>
+</body>
+</html> 

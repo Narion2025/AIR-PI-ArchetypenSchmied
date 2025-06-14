@@ -8,9 +8,6 @@
     <!-- Avenir Font Alternative (Montserrat ist ähnlich) -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome für Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
         /* Reset & Base */
         * {
@@ -126,7 +123,7 @@
             font-size: clamp(0.9rem, 2vw, 1.1rem);
             font-weight: 300;
             opacity: 0.8;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             max-width: 600px;
             line-height: 1.6;
             opacity: 0;
@@ -150,172 +147,42 @@
             animation-delay: 1.2s;
         }
 
-        /* Schmied Avatar */
-        .schmied-avatar {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 40px;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .schmied-avatar:hover {
-            transform: scale(1.05);
-        }
-
-        .avatar-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff8c00, #d2691e);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                0 0 60px rgba(255,140,0,0.6),
-                inset 0 0 40px rgba(0,0,0,0.3);
-        }
-
-        .avatar-circle::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, transparent 40%, rgba(255,140,0,0.1) 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .pulse-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            border: 2px solid rgba(255,140,0,0.4);
-            border-radius: 50%;
-            animation: pulse 2s ease-out infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.6;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.3);
-                opacity: 0;
-            }
-        }
-
-        /* CTA Button */
-        .cta-button {
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.8);
-            color: #fff;
-            padding: 18px 50px;
-            font-size: 1.1rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .cta-button:hover {
-            border-color: #ff8c00;
-            color: #ff8c00;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255,140,0,0.3);
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,140,0,0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .cta-button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        /* Hidden Widget Container */
-        .widget-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .widget-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .widget-content {
-            position: relative;
-            background: rgba(20,20,20,0.95);
-            padding: 40px;
+        /* Widget Container */
+        .widget-container {
+            background: rgba(20,20,20,0.9);
+            border: 2px solid rgba(255,140,0,0.5);
             border-radius: 20px;
-            border: 2px solid rgba(255,140,0,0.3);
-            box-shadow: 0 0 60px rgba(255,140,0,0.4);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 60px rgba(255,140,0,0.3);
+            backdrop-filter: blur(10px);
+            min-width: 300px;
         }
 
-        .widget-modal.active .widget-content {
-            transform: scale(1);
-        }
-
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .close-button:hover {
-            border-color: #ff8c00;
+        .widget-title {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
             color: #ff8c00;
-            transform: rotate(90deg);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .widget-area {
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Info Text */
+        .info-text {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 25px;
+            line-height: 1.6;
         }
 
         /* Animations */
@@ -358,24 +225,13 @@
                 padding: 20px;
             }
             
-            .schmied-avatar {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .avatar-circle {
-                font-size: 60px;
-            }
-            
-            .cta-button {
-                padding: 15px 40px;
-                font-size: 1rem;
+            .widget-container {
+                padding: 25px;
+                min-width: auto;
+                width: 100%;
             }
         }
     </style>
-    
-    <!-- ElevenLabs Widget -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </head>
 <body>
     <!-- Fire Background -->
@@ -397,18 +253,20 @@
         </p>
 
         <div class="interface-container">
-            <!-- Schmied Avatar -->
-            <div class="schmied-avatar" id="schmiedAvatar">
-                <div class="pulse-ring"></div>
-                <div class="avatar-circle">
-                    <span>🔥</span>
+            <!-- Widget Container -->
+            <div class="widget-container">
+                <h2 class="widget-title">🔥 Beginne deine Transformation</h2>
+                
+                <div class="widget-area">
+                    <!-- Official ElevenLabs Embed Code -->
+                    <elevenlabs-convai agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"></elevenlabs-convai>
                 </div>
+                
+                <p class="info-text">
+                    Klicke auf das Widget um mit dem Schmied zu sprechen.<br>
+                    44 mystische Fragen enthüllen deine drei Archetypen.
+                </p>
             </div>
-
-            <!-- CTA Button -->
-            <button class="cta-button" id="startButton">
-                Beginne deine Transformation
-            </button>
         </div>
     </div>
 
@@ -417,16 +275,8 @@
         Eine Reise zu deinen drei dominanten Archetypen
     </div>
 
-    <!-- Widget Modal -->
-    <div class="widget-modal" id="widgetModal">
-        <div class="widget-content">
-            <button class="close-button" id="closeButton">&times;</button>
-            <elevenlabs-convai 
-                agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
-                style="width: 400px; height: 80px;">
-            </elevenlabs-convai>
-        </div>
-    </div>
+    <!-- Official ElevenLabs Script (exactly as provided) -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
     <script>
         // Fire Particle System
@@ -453,31 +303,6 @@
         // Create particles continuously
         setInterval(createParticle, 200);
 
-        // Widget Modal Control
-        const widgetModal = document.getElementById('widgetModal');
-        const startButton = document.getElementById('startButton');
-        const schmiedAvatar = document.getElementById('schmiedAvatar');
-        const closeButton = document.getElementById('closeButton');
-
-        function openWidget() {
-            widgetModal.classList.add('active');
-        }
-
-        function closeWidget() {
-            widgetModal.classList.remove('active');
-        }
-
-        startButton.addEventListener('click', openWidget);
-        schmiedAvatar.addEventListener('click', openWidget);
-        closeButton.addEventListener('click', closeWidget);
-        
-        // Close on background click
-        widgetModal.addEventListener('click', (e) => {
-            if (e.target === widgetModal) {
-                closeWidget();
-            }
-        });
-
         // Mouse interaction with fire
         document.addEventListener('mousemove', (e) => {
             const x = e.clientX / window.innerWidth;
@@ -492,6 +317,18 @@
                 )
             `;
         });
+
+        // Widget Loading Check
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const widget = document.querySelector('elevenlabs-convai');
+                if (widget) {
+                    console.log('✅ ElevenLabs Widget found');
+                } else {
+                    console.error('❌ ElevenLabs Widget not found');
+                }
+            }, 2000);
+        });
     </script>
 </body>
-</html>
+</html> 

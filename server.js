@@ -18,7 +18,7 @@ app.use(helmet({
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             imgSrc: ["'self'", "data:", "https:"],
             mediaSrc: ["'self'", "blob:"],
-            connectSrc: ["'self'", "https://api.elevenlabs.io", "wss://api.elevenlabs.io"]
+            connectSrc: ["'self'", "https://api.elevenlabs.io", "https://api.us.elevenlabs.io", "wss://api.elevenlabs.io", "wss://api.us.elevenlabs.io"]
         }
     }
 }));

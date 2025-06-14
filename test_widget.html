@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElevenLabs Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #ff8c00;
+            margin-bottom: 30px;
+        }
+        .widget-container {
+            background: rgba(255,140,0,0.1);
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(255,140,0,0.3);
+        }
+        .info {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+            max-width: 600px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 ElevenLabs Widget Test</h1>
+    
+    <div class="widget-container">
+        <elevenlabs-convai agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"></elevenlabs-convai>
+    </div>
+    
+    <div class="info">
+        <p>Dies ist eine Test-Seite für das ElevenLabs Widget.</p>
+        <p>Wenn das Widget nicht lädt, prüfe:</p>
+        <ul style="text-align: left;">
+            <li>Ist die Agent ID korrekt?</li>
+            <li>Ist der Agent öffentlich zugänglich?</li>
+            <li>Blockiert der Browser das Widget?</li>
+            <li>Konsole für Fehler prüfen (F12)</li>
+        </ul>
+    </div>
+    
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+</body>
+</html> 

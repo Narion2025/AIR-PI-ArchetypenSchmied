@@ -291,6 +291,8 @@
             box-shadow: 0 0 60px rgba(255,140,0,0.4);
             transform: scale(0.9);
             transition: transform 0.3s ease;
+            max-width: 600px;
+            width: 90%;
         }
 
         .widget-modal.active .widget-content {
@@ -316,6 +318,63 @@
             border-color: #ff8c00;
             color: #ff8c00;
             transform: rotate(90deg);
+        }
+
+        /* Loading State */
+        .loading-message {
+            text-align: center;
+            color: #ff8c00;
+            font-size: 1.1rem;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,140,0,0.3);
+            border-top-color: #ff8c00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fallback Content */
+        .fallback-content {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fallback-content h3 {
+            color: #ff8c00;
+            margin-bottom: 20px;
+        }
+
+        .fallback-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .fallback-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff8c00, #ff4500);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .fallback-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,140,0,0.4);
         }
 
         /* Animations */
@@ -373,9 +432,6 @@
             }
         }
     </style>
-    
-    <!-- ElevenLabs Widget -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </head>
 <body>
     <!-- Fire Background -->
@@ -421,10 +477,31 @@
     <div class="widget-modal" id="widgetModal">
         <div class="widget-content">
             <button class="close-button" id="closeButton">&times;</button>
-            <elevenlabs-convai 
-                agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
-                style="width: 400px; height: 80px;">
-            </elevenlabs-convai>
+            
+            <!-- Loading State -->
+            <div class="loading-message" id="loadingMessage">
+                <span class="loading-spinner"></span>
+                Der Schmied erwacht...
+            </div>
+            
+            <!-- Widget Container -->
+            <div id="widgetContainer" style="display: none;">
+                <!-- ElevenLabs Widget will be inserted here -->
+            </div>
+            
+            <!-- Fallback Content -->
+            <div class="fallback-content" id="fallbackContent">
+                <h3>🔥 Der Schmied wartet auf dich</h3>
+                <p>
+                    Das mystische Portal konnte nicht geöffnet werden.<br>
+                    Besuche den Schmied direkt über diesen magischen Pfad:
+                </p>
+                <a href="https://elevenlabs.io/convai/agent_01jxn7kxjpfvt87rphxdnq1ddj" 
+                   target="_blank" 
+                   class="fallback-link">
+                    Zum Archetypen-Schmied →
+                </a>
+            </div>
         </div>
     </div>
 
@@ -458,13 +535,64 @@
         const startButton = document.getElementById('startButton');
         const schmiedAvatar = document.getElementById('schmiedAvatar');
         const closeButton = document.getElementById('closeButton');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const widgetContainer = document.getElementById('widgetContainer');
+        const fallbackContent = document.getElementById('fallbackContent');
 
         function openWidget() {
             widgetModal.classList.add('active');
+            loadElevenLabsWidget();
         }
 
         function closeWidget() {
             widgetModal.classList.remove('active');
+            // Reset states
+            loadingMessage.style.display = 'block';
+            widgetContainer.style.display = 'none';
+            fallbackContent.style.display = 'none';
+        }
+
+        function loadElevenLabsWidget() {
+            // Show loading state
+            loadingMessage.style.display = 'block';
+            widgetContainer.style.display = 'none';
+            fallbackContent.style.display = 'none';
+
+            // Try to load the widget
+            setTimeout(() => {
+                try {
+                    // Create the ElevenLabs widget element
+                    const widget = document.createElement('elevenlabs-convai');
+                    widget.setAttribute('agent-id', 'agent_01jxn7kxjpfvt87rphxdnq1ddj');
+                    widget.style.width = '100%';
+                    widget.style.height = '400px';
+                    
+                    // Clear container and add widget
+                    widgetContainer.innerHTML = '';
+                    widgetContainer.appendChild(widget);
+                    
+                    // Show widget container
+                    loadingMessage.style.display = 'none';
+                    widgetContainer.style.display = 'block';
+                    
+                    // Check if widget loaded after a delay
+                    setTimeout(() => {
+                        if (!widget.shadowRoot && !widget.children.length) {
+                            showFallback();
+                        }
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error('Widget loading error:', error);
+                    showFallback();
+                }
+            }, 1500);
+        }
+
+        function showFallback() {
+            loadingMessage.style.display = 'none';
+            widgetContainer.style.display = 'none';
+            fallbackContent.style.display = 'block';
         }
 
         startButton.addEventListener('click', openWidget);
@@ -492,6 +620,27 @@
                 )
             `;
         });
+
+        // Load ElevenLabs script dynamically
+        function loadElevenLabsScript() {
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/@elevenlabs/convai-widget@latest/dist/main.js';
+            script.async = true;
+            script.onload = () => {
+                console.log('ElevenLabs script loaded');
+            };
+            script.onerror = () => {
+                console.error('Failed to load ElevenLabs script');
+            };
+            document.head.appendChild(script);
+        }
+
+        // Load script when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadElevenLabsScript);
+        } else {
+            loadElevenLabsScript();
+        }
     </script>
 </body>
-</html>
+</html> 
