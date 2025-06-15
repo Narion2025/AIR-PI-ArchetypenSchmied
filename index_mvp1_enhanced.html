@@ -454,9 +454,6 @@
             z-index: 9999;
         }
     </style>
-    
-    <!-- ElevenLabs ConvAI Widget -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </head>
 <body>
     <!-- Resonance Field (Fire Background) -->
@@ -516,7 +513,8 @@
             <div class="schmied-voice-container">
                 <elevenlabs-convai 
                     agent-id="agent_01jxn7kxjpfvt87rphxdnq1ddj"
-                    style="width: 100%; height: 100px;">
+                    variant="expanded"
+                    style="width: 100%; max-width: 600px; height: 120px;">
                 </elevenlabs-convai>
             </div>
 
@@ -669,5 +667,6 @@
             }
         };
     </script>
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
