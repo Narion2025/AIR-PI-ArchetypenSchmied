@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname)));
 
 // Routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index_mvp1.html'));
+    res.sendFile(path.join(__dirname, 'index_mvp1_enhanced.html'));
 });
 
 app.get('/enhanced', (req, res) => {
